@@ -1,9 +1,13 @@
-
 //
 // Created by Shada Sabea on 22/05/2022.
 //
 
 #include "HealthPoints.h"
+
+HealthPoints& HealthPoints::operator=(const int healthPoints){
+    m_currentHealthPoints=healthPoints;
+    return *this;
+}
 
 HealthPoints::HealthPoints(const int healthPoints): m_currentHealthPoints(healthPoints), m_maxHealthPoints(healthPoints)
 {
@@ -12,45 +16,58 @@ HealthPoints::HealthPoints(const int healthPoints): m_currentHealthPoints(health
         throw InvalidArgument();
     }
 }
-HealthPoints HealthPoints::operator+(const int num) const
+
+
+
+HealthPoints operator+(const int num,const HealthPoints& healthPoints1)
 {
-    HealthPoints  healthPoints1=m_currentHealthPoints+num;
-    if(healthPoints1.m_currentHealthPoints>m_maxHealthPoints)
+    HealthPoints result=healthPoints1;
+    result+= num ;
+    return result;
+
+}
+
+HealthPoints operator+(const HealthPoints& healthPoints1,const int num)
+{
+    HealthPoints result=healthPoints1;
+    result+= num;
+    return result;
+}
+
+HealthPoints operator-(const HealthPoints& healthPoints1,const int num)
+{
+    HealthPoints result=healthPoints1;
+    result-= num;
+    return result;
+}
+
+
+HealthPoints& HealthPoints::operator+=(const HealthPoints& healthPoints)
+{
+m_currentHealthPoints+=healthPoints.m_currentHealthPoints;
+
+if(m_currentHealthPoints>m_maxHealthPoints)
+{
+    m_currentHealthPoints=m_maxHealthPoints;
+}
+if(m_currentHealthPoints<0)
+{
+    m_currentHealthPoints=0;
+}
+return *this;
+}
+
+HealthPoints& HealthPoints::operator-=(const HealthPoints& healthPoints)
+{
+    m_currentHealthPoints-=healthPoints.m_currentHealthPoints;
+    if(m_currentHealthPoints>m_maxHealthPoints)
     {
-        healthPoints1.m_currentHealthPoints=m_maxHealthPoints;
+        m_currentHealthPoints=m_maxHealthPoints;
     }
-    if (healthPoints1.m_currentHealthPoints<0)
+    if(m_currentHealthPoints<0)
     {
-        healthPoints1.m_currentHealthPoints=0;
+        m_currentHealthPoints=0;
     }
-
-    return healthPoints1;
-
-}
-
-HealthPoints HealthPoints::operator-(const int num) const
-{
-HealthPoints  healthPoints1=m_currentHealthPoints-num;
-if(healthPoints1.m_currentHealthPoints<0)
-{
-    healthPoints1.m_currentHealthPoints=0;
-}
-if(healthPoints1.m_currentHealthPoints>m_maxHealthPoints)
-{
-    healthPoints1.m_currentHealthPoints=m_maxHealthPoints;
-}
-return healthPoints1;
-}
-
-HealthPoints& HealthPoints::operator+=(const int num)
-{
-    m_currentHealthPoints+=num;
-    return *this;
-}
-
-HealthPoints& HealthPoints::operator-=(const int num)
-{
-    m_currentHealthPoints-=num;
     return *this;
 }
 
@@ -76,7 +93,7 @@ bool operator<(const HealthPoints& healthPoints1,const HealthPoints& healthPoint
  std::ostream& operator<<(std::ostream& os , const HealthPoints& healthPoints)
 {
     os<<healthPoints.m_currentHealthPoints<<"("<<healthPoints.m_maxHealthPoints<<")";
-     return os;
+    return os;
 }
 
 bool operator<=(const HealthPoints& healthPoints1,const HealthPoints& healthPoints2)
@@ -109,5 +126,6 @@ bool operator>(const HealthPoints& healthPoints1,const HealthPoints& healthPoint
     }
     return false;
 }
+
 
 

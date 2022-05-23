@@ -22,23 +22,20 @@ HealthPoints(const HealthPoints& healthPoints)=default;
 
 HealthPoints& operator=(const HealthPoints& healthPoints)=default;
 
+HealthPoints& operator=(const int healthPoints);
 
-/**
- *
- * @param num the number that will be added to the current health points
- * @return
- */
-HealthPoints operator+(const int num) const;
-/**
+
+HealthPoints& operator+=(const HealthPoints& healthPoints);
+
+HealthPoints& operator-=(const HealthPoints& healthPoints);
+
+    /**
  *
  * @param num the number that will be deducted to the current health points
  * @return
  */
-HealthPoints operator-(const int num) const;
 
-HealthPoints& operator+=(const int num);
 
-HealthPoints& operator-=(const int num);
 
  class InvalidArgument{};
 
@@ -53,6 +50,13 @@ private:
 
 
 
+
+
+HealthPoints operator-(const HealthPoints& healthPoints1,const int num);
+
+
+HealthPoints operator+(const int num,const HealthPoints& healthPoints2);//000000000
+HealthPoints operator+(const HealthPoints& healthPoints2,const int num);//000000000
 
 
 bool operator<=(const HealthPoints& healthPoints1,const HealthPoints& healthPoints2) ;

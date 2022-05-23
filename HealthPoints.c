@@ -76,6 +76,7 @@ bool operator<(const HealthPoints& healthPoints1,const HealthPoints& healthPoint
  std::ostream& operator<<(std::ostream& os , const HealthPoints& healthPoints)
 {
     os<<healthPoints.m_currentHealthPoints<<"("<<healthPoints.m_maxHealthPoints<<")";
+     return os;
 }
 
 bool operator<=(const HealthPoints& healthPoints1,const HealthPoints& healthPoints2)

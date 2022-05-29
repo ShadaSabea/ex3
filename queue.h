@@ -16,20 +16,21 @@ public:
 Queue(const Queue<T>& queue);
 ~Queue();
 Queue& operator=(const Queue& queue);
-
-
 void pushBack(T& element);
-
-T& popFront();
-
+void popFront();
 int size();
 
 template <class Condition>
-Queue filter(Condition c) const;
+Queue<T> filter(Queue<T> queue,Condition c) const;
 
+template <class Condition>
 void transform(Condition c) const;
 
+
 class InvalidSize{};
+class EmptyQueue{};
+
+
 //Queue<T>& operator!=
 
 
@@ -124,7 +125,68 @@ catch (...)
 
 delete[] m_array;
 m_array=queue;
+m_size++;
 }
+
+template<class T>
+void Queue<T>::popFront()
+ {
+    if(m_size==0)
+    {   EmptyQueue e;
+        throw EmptyQueue (e);
+    }
+
+
+     T* queue=new T[m_size-1];
+     try
+     {
+         for (int i = 0; i < m_size-1; i++)
+         {
+             queue[i] = m_array[i+1];
+         }
+     }
+     catch (...)
+     {
+         delete[] queue;
+         throw ;
+     }
+     delete [] m_array;
+     m_array=queue;
+     m_size--;
+ }
+
+template<class T>
+template <class Condition>
+Queue<T> Queue<T>::filter(Queue<T> queue, Condition c) const
+{  Queue<T> queue1;
+
+    for(int i=0;i<queue.m_size;i++)
+    {
+        if(c(queue.m_array[i]))
+        {
+            queue1.pushBack(queue.m_array[i]);
+        }
+    }
+    return queue1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

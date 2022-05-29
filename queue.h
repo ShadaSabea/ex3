@@ -231,6 +231,30 @@ class Queue<T>::Iterator{
 
 
 
+template<class T>
+typename Queue<T>::Iterator Queue<T>::begin() const
+{
+    return Iterator(this,0);
+}
+
+template<class T>
+bool Queue<T>::Iterator::operator==(const Iterator &it) const 
+{
+    return index==it.index;
+}
+
+template<class T>
+bool Queue<T>::Iterator::operator!=(const Iterator &it) const
+{
+    return !(*this==it);
+}
+
+template<class T>
+const T& Queue<T>::Iterator::operator*() const 
+{
+    return queue->m_array[index];
+}
+
 
 
 

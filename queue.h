@@ -17,6 +17,7 @@ Queue(const Queue<T>& queue);
 ~Queue();
 Queue& operator=(const Queue& queue);
 void pushBack(T& element);
+T& front();
 void popFront();
 int size();
 

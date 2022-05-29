@@ -31,7 +31,9 @@ class InvalidSize{};
 class EmptyQueue{};
 
 
-//Queue<T>& operator!=
+class Iterator;
+    Iterator begin() const;
+    Iterator end() const;
 
 
 
@@ -171,6 +173,57 @@ Queue<T> Queue<T>::filter(Queue<T> queue, Condition c) const
 }
 
 
+
+template<class T>
+int Queue<T>::size(){
+    return m_size;
+}
+
+
+template<class T>
+T& Queue<T>::front()
+{
+    if(m_size!=0)
+    {
+        return m_array[0];
+    }
+    else
+    {
+        EmptyQueue e;
+        throw EmptyQueue(e);
+    }
+}
+
+template<class T>
+template <class Condition>
+void Queue<T>::transform(Queue<T> queue,Condition c) const
+{
+    for (int i = 0; i < queue.m_size; ++i)
+    {
+        queue.m_array[i]=c(queue.m_array[i]);
+    }
+}
+
+
+
+template <class T>
+class Queue<T>::Iterator{
+    public:
+            const T& operator*() const;
+            Iterator& operator++();
+            Iterator operator++(T);
+            bool operator==(const Iterator& it) const;
+            bool operator!=(const Iterator& it) const;
+            Iterator(const Iterator&)=default;
+            Iterator& operator=(const Iterator&)=default;
+
+
+    private:
+            const Queue<T>* queue;
+            int index;
+            Iterator(const Queue<T> queue,int index);
+            friend class Queue<T>;
+        };
 
 
 

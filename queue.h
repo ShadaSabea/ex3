@@ -201,7 +201,7 @@ void Queue<T>::transform(Queue<T> queue,Condition c) const
 {
     for (int i = 0; i < queue.m_size; ++i)
     {
-        queue.m_array[i]=c(queue.m_array[i]);
+        c(queue.m_array[i]);
     }
 }
 

@@ -13,26 +13,27 @@ class Queue
 public:
     Queue();
 //explicit Queue(const int size);
-Queue(const Queue<T>& queue);
-~Queue();
-Queue& operator=(const Queue& queue);
-void pushBack(T& element);
-T& front();
-void popFront();
-int size();
+    Queue(const Queue<T>& queue);
+    ~Queue();
+    Queue& operator=(const Queue& queue);
+    void pushBack(T& element);
+    void popFront();
+    int size();
+    T& front();
 
-template <class Condition>
-Queue<T> filter(Queue<T> queue,Condition c) const;
+    template <class Condition>
+    Queue<T> filter(Queue<T> queue,Condition c) const;
 
-template <class Condition>
-void transform(Condition c) const;
-
-
-class InvalidSize{};
-class EmptyQueue{};
+    template <class Condition>
+     void transform(Queue queue,Condition c) const;
 
 
-class Iterator;
+
+    class EmptyQueue{};
+
+
+
+    class Iterator;
     Iterator begin() const;
     Iterator end() const;
 
@@ -52,7 +53,7 @@ private:
 
 template<class T>
 Queue<T>::Queue(): m_array(new T[INITIAL_SIZE]),
-m_size(INITIAL_SIZE)
+                   m_size(INITIAL_SIZE)
 {}
 
 
@@ -82,8 +83,8 @@ Queue<T>& Queue<T>::operator=(const Queue& queue)
     }
     catch(...)
     {
-    delete[] temp_array;
-    throw;
+        delete[] temp_array;
+        throw;
     }
     delete[] m_array;
     m_array=temp_array;
@@ -93,7 +94,7 @@ Queue<T>& Queue<T>::operator=(const Queue& queue)
 
 template<class T>
 Queue<T>::Queue(const Queue<T>& queue):
-m_array(new T[queue.m_size]), m_size(queue.m_size)
+        m_array(new T[queue.m_size]), m_size(queue.m_size)
 {
     try {
         for (int i = 0; i < m_size; i++)
@@ -112,51 +113,51 @@ template<class T>
 void Queue<T>::pushBack(T& element)
 {
     T* queue=new T[m_size+1];
-try
-{
-    for (int i = 0; i < m_size; i++)
+    try
     {
-        queue[i] = m_array[i];
+        for (int i = 0; i < m_size; i++)
+        {
+            queue[i] = m_array[i];
+        }
+        queue[m_size]= element;
     }
-    queue[m_size]= element;
-}
-catch (...)
-{
-    delete[] queue;
-    throw ;
-}
+    catch (...)
+    {
+        delete[] queue;
+        throw ;
+    }
 
-delete[] m_array;
-m_array=queue;
-m_size++;
+    delete[] m_array;
+    m_array=queue;
+    m_size++;
 }
 
 template<class T>
 void Queue<T>::popFront()
- {
+{
     if(m_size==0)
     {   EmptyQueue e;
         throw EmptyQueue (e);
     }
 
 
-     T* queue=new T[m_size-1];
-     try
-     {
-         for (int i = 0; i < m_size-1; i++)
-         {
-             queue[i] = m_array[i+1];
-         }
-     }
-     catch (...)
-     {
-         delete[] queue;
-         throw ;
-     }
-     delete [] m_array;
-     m_array=queue;
-     m_size--;
- }
+    T* queue=new T[m_size-1];
+    try
+    {
+        for (int i = 0; i < m_size-1; i++)
+        {
+            queue[i] = m_array[i+1];
+        }
+    }
+    catch (...)
+    {
+        delete[] queue;
+        throw ;
+    }
+    delete [] m_array;
+    m_array=queue;
+    m_size--;
+}
 
 template<class T>
 template <class Condition>
@@ -205,55 +206,77 @@ void Queue<T>::transform(Queue<T> queue,Condition c) const
     }
 }
 
+template<class T>
+typename Queue<T>::Iterator Queue<T>::end() const
+{
+    return Iterator(this,m_size-1);
+}
+
+
 
 
 template <class T>
 class Queue<T>::Iterator{
-    public:
-            const T& operator*() const;
-            Iterator& operator++();
-            Iterator operator++(T);
-            bool operator==(const Iterator& it) const;
-            bool operator!=(const Iterator& it) const;
-            Iterator(const Iterator&)=default;
-            Iterator& operator=(const Iterator&)=default;
+public:
+    const T& operator*() const;
+    Iterator& operator++();
+    Iterator operator++(T);
+    bool operator==(const Iterator& it) const;
+    bool operator!=(const Iterator& it) const;
+    Iterator(const Iterator&)=default;
+    Iterator& operator=(const Iterator&)=default;
+    class InvalidOperation{};
 
 
-    private:
-            const Queue<T>* queue;
-            int index;
-            Iterator(const Queue<T> queue,int index);
-            friend class Queue<T>;
-        };
+private:
+    const Queue<T> *queue;
+    int m_index;
+    Iterator(const Queue<T>* queue,int index);
+    friend class Queue<T>;
+};
 
 
-
-
-
-
-template<class T>
-typename Queue<T>::Iterator Queue<T>::begin() const
+template <class T>
+typename Queue<T>::Iterator&  Queue<T>::Iterator::operator++()
 {
-    return Iterator(this,0);
+
+    if(m_index == this->end().index)
+    {
+        InvalidOperation e;
+        throw InvalidOperation(e);
+    }
+    ++m_index;
+    return *this;
 }
 
-template<class T>
-bool Queue<T>::Iterator::operator==(const Iterator &it) const 
-{
-    return index==it.index;
+template <class T>
+typename Queue<T>::Iterator Queue<T>::Iterator::operator++(T)
+{  if(m_index == this->end().index)
+    {
+        InvalidOperation e;
+        throw InvalidOperation(e);
+    }
+    Iterator result=*this;
+    ++*this;
+    return result;
 }
 
-template<class T>
-bool Queue<T>::Iterator::operator!=(const Iterator &it) const
+template <class T>
+ Queue<T>::Iterator::Iterator(const Queue<T>* queue,int index) :
+    queue(queue)
 {
-    return !(*this==it);
+        if(index<0)
+        {   InvalidOperation e;
+            throw InvalidOperation(e);
+        }
+        m_index=index;
 }
 
-template<class T>
-const T& Queue<T>::Iterator::operator*() const 
-{
-    return queue->m_array[index];
-}
+
+
+
+
+
 
 
 

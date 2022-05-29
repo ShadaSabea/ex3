@@ -276,6 +276,35 @@ template <class T>
 
 
 
+template<class T>
+typename Queue<T>::Iterator Queue<T>::begin() const
+{
+    return Iterator(this,0);
+}
+
+template<class T>
+bool Queue<T>::Iterator::operator==(const Iterator &it) const
+{
+    return m_index==it.index;
+}
+
+template<class T>
+bool Queue<T>::Iterator::operator!=(const Iterator &it) const
+{
+    return !(*this==it);
+}
+
+template<class T>
+const T& Queue<T>::Iterator::operator*() const
+{
+    if(m_index<0)
+    {
+        EmptyQueue e;
+        throw EmptyQueue(e);
+    }
+    return queue->m_array[m_index];
+}
+
 
 
 

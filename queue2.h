@@ -34,6 +34,8 @@ public:
     class Iterator;
     Iterator begin() const;
     Iterator end() const;
+    Iterator begin();
+    Iterator end();
 
 
 class EmptyQueue{};
@@ -206,14 +208,17 @@ template <class T>
 class Queue<T>::Iterator {
 public:
     const T &operator*() const;
+    const T &operator*() ;
 
     Iterator &operator++();
 
     Iterator operator++(T);
 
     bool operator==(const Iterator &it) const;
+    bool operator==(const Iterator &it);
 
     bool operator!=(const Iterator &it) const;
+    bool operator!=(const Iterator &it);
 
     Iterator(const Iterator &) = default;
 
@@ -239,11 +244,22 @@ typename Queue<T>::Iterator Queue<T>::begin() const
 }
 
 template<class T>
+typename Queue<T>::Iterator Queue<T>::begin()
+{
+    return Iterator(this,0);
+}
+
+template<class T>
 typename Queue<T>::Iterator Queue<T>::end() const
 {
     return Iterator(this,m_size-1);
 }
 
+template<class T>
+typename Queue<T>::Iterator Queue<T>::end()
+{
+    return Iterator(this,m_size-1);
+}
 
 template<class T>
 bool Queue<T>::Iterator::operator==(const Iterator &it) const
@@ -252,7 +268,19 @@ bool Queue<T>::Iterator::operator==(const Iterator &it) const
 }
 
 template<class T>
+bool Queue<T>::Iterator::operator==(const Iterator &it)
+{
+    return m_index==it.index;
+}
+
+template<class T>
 bool Queue<T>::Iterator::operator!=(const Iterator &it) const
+{
+    return !(*this==it);
+}
+
+template<class T>
+bool Queue<T>::Iterator::operator!=(const Iterator &it)
 {
     return !(*this==it);
 }
@@ -268,6 +296,20 @@ const T& Queue<T>::Iterator::operator*() const
     return queue->m_array[m_index];
 }
 
+
+
+template<class T>
+const T& Queue<T>::Iterator::operator*()
+{
+    if(m_index<0)
+    {
+        EmptyQueue e;
+        throw EmptyQueue(e);
+    }
+    return queue->m_array[m_index];
+}
+
+
 template <class T>
 typename Queue<T>::Iterator&  Queue<T>::Iterator::operator++()
 {
@@ -279,6 +321,8 @@ typename Queue<T>::Iterator&  Queue<T>::Iterator::operator++()
     ++m_index;
     return *this;
 }
+
+
 template <class T>
 typename Queue<T>::Iterator Queue<T>::Iterator::operator++(T)
 {  if(m_index == this->end().index)
@@ -290,6 +334,8 @@ typename Queue<T>::Iterator Queue<T>::Iterator::operator++(T)
     ++*this;
     return result;
 }
+
+
 template <class T>
 Queue<T>::Iterator::Iterator(const Queue<T>* queue,int index) :
         queue(queue)

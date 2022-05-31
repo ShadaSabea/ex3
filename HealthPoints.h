@@ -14,20 +14,20 @@ public:
      * constructor
      * @param healthPoints the number of health points
      */
-HealthPoints(const int m_currentHealthPoints=100);
+    HealthPoints(const int m_currentHealthPoints=100);
 
-HealthPoints(const HealthPoints& healthPoints)=default;
+    HealthPoints(const HealthPoints& healthPoints)=default;
 
-~HealthPoints()=default;
+    ~HealthPoints()=default;
 
-HealthPoints& operator=(const HealthPoints& healthPoints)=default;
+    HealthPoints& operator=(const HealthPoints& healthPoints)=default;
 
-HealthPoints& operator=(const int healthPoints);
+    HealthPoints& operator=(const int healthPoints);
 
 
-HealthPoints& operator+=(const HealthPoints& healthPoints);
+    HealthPoints& operator+=(const HealthPoints& healthPoints);
 
-HealthPoints& operator-=(const HealthPoints& healthPoints);
+    HealthPoints& operator-=(const HealthPoints& healthPoints);
 
     /**
  *
@@ -37,12 +37,12 @@ HealthPoints& operator-=(const HealthPoints& healthPoints);
 
 
 
- class InvalidArgument{};
+    class InvalidArgument{};
 
 
 private:
-   int m_currentHealthPoints;
-   int m_maxHealthPoints;
+    int m_currentHealthPoints;
+    int m_maxHealthPoints;
     friend bool operator==(const HealthPoints& healthPoints1, const HealthPoints& healthPoints2);
     friend std::ostream& operator<<(std::ostream&, const HealthPoints&);
     friend bool operator<(const HealthPoints& healthPoints1,const HealthPoints& healthPoints2);
@@ -64,5 +64,7 @@ bool operator<=(const HealthPoints& healthPoints1,const HealthPoints& healthPoin
 bool operator>=(const HealthPoints& healthPoints1,const HealthPoints& healthPoints2) ;
 
 bool operator>(const HealthPoints& healthPoints1,const HealthPoints& healthPoints2) ;
+
+bool operator!=(const HealthPoints& healthPoints1,const HealthPoints& healthPoints2);
 
 #endif //EX3_HEALTHPOINTS_H

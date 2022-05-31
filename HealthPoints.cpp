@@ -5,7 +5,12 @@
 #include "HealthPoints.h"
 
 HealthPoints& HealthPoints::operator=(const int healthPoints){
+    if(healthPoints<=0)
+    {
+        throw InvalidArgument();
+    }
     m_currentHealthPoints=healthPoints;
+    m_maxHealthPoints=healthPoints;
     return *this;
 }
 
@@ -13,7 +18,8 @@ HealthPoints::HealthPoints(const int healthPoints): m_currentHealthPoints(health
 {
     if(healthPoints<=0)
     {
-        throw InvalidArgument();
+
+         throw InvalidArgument();
     }
 }
 
@@ -126,5 +132,4 @@ bool operator>(const HealthPoints& healthPoints1,const HealthPoints& healthPoint
     }
     return false;
 }
-
 

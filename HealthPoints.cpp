@@ -4,8 +4,8 @@
 
 #include "HealthPoints.h"
 
-HealthPoints& HealthPoints::operator=(const int healthPoints){
-    if(healthPoints<=0)
+HealthPoints& HealthPoints::operator=(int healthPoints){
+    if(healthPoints<0)
     {
         throw InvalidArgument();
     }
@@ -14,16 +14,13 @@ HealthPoints& HealthPoints::operator=(const int healthPoints){
     return *this;
 }
 
-HealthPoints::HealthPoints(const int healthPoints): m_currentHealthPoints(healthPoints), m_maxHealthPoints(healthPoints)
+HealthPoints::HealthPoints(int healthPoints): m_currentHealthPoints(healthPoints), m_maxHealthPoints(healthPoints)
 {
     if(healthPoints<=0)
     {
-
          throw InvalidArgument();
     }
 }
-
-
 
 HealthPoints operator+(const int num,const HealthPoints& healthPoints1)
 {
@@ -47,33 +44,44 @@ HealthPoints operator-(const HealthPoints& healthPoints1,const int num)
     return result;
 }
 
-
-HealthPoints& HealthPoints::operator+=(const HealthPoints& healthPoints)
+HealthPoints operator-(const int num,const HealthPoints& healthPoints1)
 {
-    m_currentHealthPoints+=healthPoints.m_currentHealthPoints;
+    HealthPoints result=healthPoints1;
+    result-= num;
+    return result;
+}
 
-    if(m_currentHealthPoints>m_maxHealthPoints)
+HealthPoints& HealthPoints::operator+=(const int increase)
+{
+    int result =m_currentHealthPoints+increase;
+    if(result>m_maxHealthPoints)
     {
         m_currentHealthPoints=m_maxHealthPoints;
+        return *this;
     }
-    if(m_currentHealthPoints<0)
+    if(result<0)
     {
         m_currentHealthPoints=0;
+        return *this;
     }
+    m_currentHealthPoints=result;
     return *this;
 }
 
-HealthPoints& HealthPoints::operator-=(const HealthPoints& healthPoints)
+HealthPoints& HealthPoints::operator-=(const int decrease)
 {
-    m_currentHealthPoints-=healthPoints.m_currentHealthPoints;
-    if(m_currentHealthPoints>m_maxHealthPoints)
+    int result =m_currentHealthPoints-decrease;
+    if(result>m_maxHealthPoints)
     {
         m_currentHealthPoints=m_maxHealthPoints;
+        return *this;
     }
-    if(m_currentHealthPoints<0)
+    if(result<0)
     {
         m_currentHealthPoints=0;
+        return *this;
     }
+    m_currentHealthPoints=result;
     return *this;
 }
 

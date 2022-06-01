@@ -89,6 +89,7 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& queue)
         throw;
     }
     delete[] m_array;
+
     m_array=temp_array;
 
     return *this;
@@ -132,7 +133,7 @@ void Queue<T>::pushBack(const T& element)
     T* queue=new T[m_size+1];
     try
     {
-        for (int i = 0; i < m_size; i++)
+        for (int i = 0; i < m_size; ++i)
         {
             queue[i] = m_array[i];
         }
@@ -195,6 +196,11 @@ void Queue<T>::popFront()
     {
         EmptyQueue e;
         throw EmptyQueue (e);
+    }
+    if(m_size == 1)
+    {
+        m_size = 0;
+        return ; 
     }
     T* queue= new T[m_size-1];
     try

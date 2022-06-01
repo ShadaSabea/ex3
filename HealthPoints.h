@@ -131,7 +131,12 @@ bool operator>=(const HealthPoints& healthPoints1,const HealthPoints& healthPoin
  * @return true if the first object > second object
  */
 bool operator>(const HealthPoints& healthPoints1,const HealthPoints& healthPoints2);
-
+/**
+ * comparison between 2 objects
+ * @param healthPoints1
+ * @param healthPoints2
+ * @return true if the first object != second object
+ */
 bool operator!=(const HealthPoints& healthPoints1,const HealthPoints& healthPoints2);
 
 #endif //EX3_HEALTHPOINTS_H
